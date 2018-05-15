@@ -1,0 +1,15 @@
+{
+  "name": "yt-nico-observer",
+  "version": "1.0.0",
+  "description": "a discord bot",
+  "main": "index.js",
+  "repository": "github.com:neverclear86/yt-nico-observer.git",
+  "author": "neverclear <neverclear86sab@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
