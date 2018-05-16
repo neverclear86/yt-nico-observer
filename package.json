@@ -2,14 +2,17 @@
   "name": "yt-nico-observer",
   "version": "1.0.0",
   "description": "a discord bot",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "github.com:neverclear86/yt-nico-observer.git",
   "author": "neverclear <neverclear86sab@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.3.2"
+    "discord.js": "^11.3.2",
+    "request": "^2.86.0",
+    "request-promise": "^4.2.2",
+    "xml-js": "^1.6.2"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/index.js"
   }
 }
