@@ -4,7 +4,7 @@ const Discord = require('discord.js')
 const client = new Discord.Client()
 const yaml = require('js-yaml')
 const nicovideo = require('./niconico/video')
-const user = require('./settings/user-setting.js')
+// const user = require('./settings/user-setting.js')
 
 
 client.on('ready', () => {
@@ -22,13 +22,7 @@ function setDefault() {
 
     switch (command[0]) {
       case "!create":
-        channel.send('名前')
-        new Promise((resolve, a) => {
-          client.once('message', m => {
-            resolve(m.content)
-          })
-        })
-
+        channel.send('名前を入れろ')
         break
       case "!edit":
         break
@@ -46,9 +40,9 @@ function setDefault() {
 
 setDefault()
 
-const dataDir = '/var/data/'
+const dataDir = '../data/'
 client.setInterval(() => {
-  fs.readdirSync('/var/data/').forEach(e => {
+  fs.readdirSync(dataDir).forEach(e => {
     var data = yaml.safeLoad(fs.readFileSync(dataDir + e))
 
     // ニコニコ動画
