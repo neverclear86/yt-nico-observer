@@ -1,0 +1,9 @@
+version: "2"
+services:
+  test:
+    build: "."
+    volumes:
+      - ./data:/var/data
+    environments:
+      BOT_TOKEN: [token]
+    # entrypoint: "node src/niconico/video.js"
