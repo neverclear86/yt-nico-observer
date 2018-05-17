@@ -11,29 +11,40 @@ client.on('ready', () => {
   console.log('ログインしました。')
 })
 
+function setDefault() {
+  client.once('message', message => {
+    // TODO ユーザの設定などをDiscordからできるようにする
+    // if (message.content.startsWith('!ping')) {
+    //   message.channel.send('pong!') // ここに指定した文字列がボットの発言になる
+    // }
+    var channel = message.channel
+    var command = message.content.split(" ")
 
-client.on('message', message => {
-  // TODO ユーザの設定などをDiscordからできるようにする
-  // if (message.content.startsWith('!ping')) {
-  //   message.channel.send('pong!') // ここに指定した文字列がボットの発言になる
-  // }
-  var channel = message.channel
-  var command = message.content.split(" ")
+    switch (command[0]) {
+      case "!create":
+        channel.send('名前')
+        new Promise((resolve, a) => {
+          client.once('message', m => {
+            resolve(m.content)
+          })
+        })
 
-  switch (command[0]) {
-    case "!create":
-      break
-    case "!edit":
-      break
-    case "!list":
-      var ret = fs.readdirSync(path.basename('/var/data/'), '.yml').join('\n')
-      channel.send(ret)
-      break
-    default:
-      break
-  }
-})
+        break
+      case "!edit":
+        break
+      case "!list":
+        var ret = fs.readdirSync(path.basename('/var/data/'), '.yml').join('\n')
+        channel.send(ret)
+        setDefault()
+        break
+      default:
+        setDefault()
+        break
+    }
+  })
+}
 
+setDefault()
 
 const dataDir = '/var/data/'
 client.setInterval(() => {
