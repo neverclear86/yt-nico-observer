@@ -2,12 +2,25 @@ const fs = require('fs');
 const yaml = require('js-yaml')
 const path = require('path')
 
+const Services = require('../services')
+
+
+const dataDir = process.env.DATA_DIR
 
 const COMMANDS = {
   create: "!create",
   edit: "!edit",
+  remove: "!remove",
   list: "!list",
   exit: "!exit",
+  end: "!end",
+}
+
+const MODES = {
+  default: 0,
+  create: 1,
+  edit: 2,
+  remove: 3,
 }
 
 function help(command) {
@@ -15,73 +28,67 @@ function help(command) {
 }
 
 
-var userSetting = {
-  n: 0,
-  filename: "",
-  mode: "",
-}
-
-const questions = [
-  "ユーザ名", "ニコニコ UserID", "ニコニコミュニティID", "YoutubeChannelID",
-]
-var answers = []
+var user = null
+var mode = 0
 
 
-module.exports = dataDir => {
-  return message => {
-    if (message.author.bot) {
-      return
-    }
+module.exports = message => {
+  if (message.author.bot) {
+    return
+  }
+  var channel = message.channel
 
-    var channel = message.channel
-    var input = message.content.split(" ")
-    if (userSetting.n == 0) {
+  switch (mode) {
+    case MODES.default:
+      var input = message.content.split(" ")
       switch (input[0]) {
         case COMMANDS.create:
           if (!input[1]) {
             channel.send(help(COMMANDS.create))
             return
           }
-          channel.send(questions[0])
-          userSetting.filename = input[1]
-          userSetting.n++
-          userSetting.mode = COMMANDS.create
+          user = new User(input[1])
+          channel.send('以下のURLを1つ以上入力してください("' + COMMANDS.end + '"で終了)')
+          channel.send('ニコニコユーザーページ')
+          channel.send('YouTubeチャンネルページ')
+          mode = MODES.create
           break
         case COMMANDS.edit:
           break
         case COMMANDS.list:
-          var ret = fs.readdirSync(dataDir).map(p => path.basename(p, '.yml')).join('\n')
-          channel.send(ret || "No data.")
+          channel.send(User.list.join('\n') || "No data.")
           break
         default:
           break
       }
-    } else {
-      if (message.content.startsWith(COMMANDS.exit) || userSetting.n >= questions.length) {
-        if (userSetting.n >= questions.length) {
-          // TODO 設定
-          answers[userSetting.n - 1] = message.content
-          console.log(answers)
-          var data = {
-            name: answers[0],
-            niconico: {
-              userId: answers[1],
-              community: answers[2],
-            },
-            youtube: {
-              channel: answers[3],
-            },
-          }
-          fs.writeFileSync(path.join(dataDir, userSetting.filename + ".yml"), yaml.safeDump(data, {compact: true}))
+
+    case MODES.create:
+      if (isUrl(message.content)) {
+        var ret = Services.detect_service(message.content)
+        user.add(ret.service, ret.id)
+        if (ret == null) {
+          channel.send('そのURLは知らない')
+        } else {
+          channel.send(ret.service + 'を認識  ID: ' + ret.id)
         }
-        userSetting.n = 0
-        answers = []
-        return
+      } else if (message.content == COMMANDS.end) {
+        mode = MODES.default
+        user.save()
+        user = null
+      } else {
+        channel.send('URL入れろ。終わるなら"' + COMMANDS.end + '"だ')
       }
 
-      answers[userSetting.n - 1] = message.content
-      channel.send(questions[userSetting.n])
-      userSetting.n++
-    }
+
+      break
+
+    case MODES.edit:
+      break
+
+    case MODES.remove:
+      break
+
+    default:
+      break
   }
 }
