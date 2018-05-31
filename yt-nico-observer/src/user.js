@@ -44,3 +44,6 @@ class User {
     return fs.readdirSync(dataDir).map(p => path.basename(p, '.yml'))
   }
 }
+
+
+module.exports = User
