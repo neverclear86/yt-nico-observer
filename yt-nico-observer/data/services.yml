@@ -1,0 +1,4 @@
+- url: http://www.nicovideo.jp/user/(\d*)
+  service: ニコニコ動画
+- url: https://youtube.com/channel/(\w*)
+  service: YouTube

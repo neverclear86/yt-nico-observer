@@ -4,6 +4,7 @@ services:
     build: "."
     volumes:
       - ./data:/var/data
-    environments:
-      BOT_TOKEN: [token]
+    environment:
+      DATA_DIR: /var/data/
+      BOT_TOKEN: NDQ1OTAxNDczMTU1NTE0Mzc4.DeWIZA.h5oLKk9yTAos4ne0wcHnK3ebJIk
     # entrypoint: "node src/niconico/video.js"

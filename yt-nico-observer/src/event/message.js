@@ -3,6 +3,7 @@ const yaml = require('js-yaml')
 const path = require('path')
 const isUrl = require('is-url')
 
+const Services = require('../services')
 const User = require('../user')
 
 
@@ -63,12 +64,12 @@ function create(message) {
   var channel = message.channel
   if (isUrl(message.content)) {
     var ret = Services.detect_service(message.content)
-    user.add(ret.service, ret.id)
-    if (ret == null) {
+    if (!ret.id) {
       channel.send('そのURLは知らない')
-    } else {
-      channel.send(ret.service + 'を認識  ID: ' + ret.id)
+      return
     }
+    channel.send(ret.site + 'を認識  ID: ' + ret.id)
+    user.add(ret.site, ret.id)
   } else if (message.content == COMMANDS.end) {
     mode = MODES.default
     user.save()

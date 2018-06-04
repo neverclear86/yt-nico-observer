@@ -2,8 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const yaml = require('js-yaml')
 
-const Services = require('./services')
-
 const dataDir = process.env.DATA_DIR
 
 class User {
@@ -12,7 +10,7 @@ class User {
     this.services = {video: {}, live: {},}
   }
 
-  add(service, id) {
+  add(site, id) {
     // var s = Services.detect_service(url)
     // this.services[s.kind][s.site] = s.id
   }
