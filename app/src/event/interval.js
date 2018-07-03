@@ -7,7 +7,7 @@ const User = require('../user')
 
 function fetchActivity() {
   User.getAllUser().forEach(u => {
-    
+
   })
   //   // ニコニコ動画
   //   nicovideo(data).then(videos => {

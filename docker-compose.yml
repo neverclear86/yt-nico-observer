@@ -1,10 +1,13 @@
-version: "2"
+version: "2.3"
 services:
   test:
-    build: "."
+    # build: "."
+    image: node:slim
     volumes:
-      - ./data:/var/data
+      - ./app:/app
+      - ./data:/data
     environment:
-      DATA_DIR: /var/data/
+      DATA_DIR: /data/
       BOT_TOKEN: NDQ1OTAxNDczMTU1NTE0Mzc4.DeWIZA.h5oLKk9yTAos4ne0wcHnK3ebJIk
-    # entrypoint: "node src/niconico/video.js"
+    working_dir: /app
+    entrypoint: bash -c "yarn & yarn debug"
