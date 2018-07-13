@@ -2,11 +2,12 @@ const fs = require('fs')
 const path = require('path')
 const yaml = require('js-yaml')
 
-const User = require('../user')
+const User = require('/app/user')
 
 
 function fetchActivity() {
-  User.getAllUser().forEach(u => {
+  User.getAllUser().forEach(async u => {
+    var nicoVideos = await require('/app/niconico/video')(u)
 
   })
   //   // ニコニコ動画
